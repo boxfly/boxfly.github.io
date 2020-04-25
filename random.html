@@ -1,0 +1,108 @@
+<style>
+    .w{
+        width: 90vw;
+		margin:10px;
+    }
+    .choose{ 
+        height: 100px;
+        line-height: 100px;
+        text-align: center;
+        border: 1px solid #CCC;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .choose:hover{
+         background-color: aqua;
+    }
+</style>
+<script src="https://cdn.bootcss.com/jquery/3.5.0/jquery.min.js"></script>
+随机个数 
+<br><input  class="w" type="number" name=""  id="randomNumber" onkeyup="value=value.match(/^((?!0)\d{1,2})$/)?value:''">
+<br><textarea class="w"  name="" id="mytextarea"  rows="5"></textarea>
+<br><select class="w" id="historySelect"> </select>
+<br><div class="w choose" onclick="rand.choose()">随机一下</div>
+随机结果(保留5次选出数据)
+<hr>
+<ul class="history">
+
+</ul>  
+<script>
+  
+     rand = {
+        name:"random-app",
+        data:{
+            textarea:["奇数","偶数"],
+            number:1,
+            history:[],
+        },
+        
+        
+        init(){
+              local = localStorage.getItem(this.name)   
+              if(local){
+                local =JSON.parse(local)
+                this.data.textarea = local.textarea;
+                this.data.number = local.number;
+                this.data.history = local.history;
+              }
+              $("#randomNumber").val(this.data.number)
+              $("#mytextarea").val(this.data.textarea[this.data.textarea.length-1])
+              console.log(['init()',this.data])
+			  
+              this.renderHistory() 
+			  $("#historySelect").change(function () {
+				$("#mytextarea").val($("#historySelect").find("option:selected").text());
+			  });
+        },
+        str2Arr(str){ 
+                console.log(['str2Arr()',str])  
+				str = str.replace(/,/g," ")
+				str = str.replace(/，/g," ")
+                return str.split(" ") 
+        },
+        choose(){
+            this.data.number = $("#randomNumber").val()
+            var str = $("#mytextarea").val()
+            this.data.textarea.push(str)
+            var arr = this.str2Arr(str).sort(()=>{return Math.random()-0.5}).slice(0,this.data.number)
+            this.data.history.push(arr)
+            console.log(['choose()',this.data])  
+            this.save()
+            this.renderHistory()
+        },
+        save(){
+            this.data.history = this.data.history.slice(-5);
+			this.data.textarea = this.data.textarea.slice(-50);
+            localStorage.setItem(this.name,JSON.stringify(this.data))   
+        },
+        renderHistory(){
+            console.log(['renderHistory()',this.data])  
+            html=""
+            list = [...this.data.history]
+            list.reverse().map((e,i)=>{
+                html += e + ",<br>"
+            })  
+			$('.history').html(html)
+			html=""
+			list = [...this.data.textarea]
+            list.reverse().map((e,i)=>{
+                html += `<option value="${i}">${e}</option>`
+            })  
+            $('#historySelect').html(html)
+        },
+        commonPositiveInteger(num) {
+           console.log(['test()',num])   
+           return num.match(/^((?!0)\d{1,9})$/)
+         } 
+
+     }
+     rand.init()
+     /*
+      不是问题的 注意点
+	  [] 最后上线的每页默认加载是100条
+	  [] 图片显示title
+	  [] title 是链接的下划线 需要能直接打开
+	  [] title 的链接和文本类型的 图标
+	  
+     */
+</script>

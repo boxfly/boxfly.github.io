@@ -1,0 +1,79 @@
+<script src="https://cdn.bootcss.com/jquery/3.5.0/jquery.min.js"></script>
+<script src="https://cdn1.lncld.net/static/js/3.2.1/av-min.js"></script>
+  
+
+<script src="https://cdn.jsdelivr.net/npm/leancloud-realtime@4.3.0/dist/realtime.browser.min.js"></script>
+<style>
+  #info{
+    width:90%;
+	height:90vh;
+  }
+</style>
+<textarea id="info"></textarea>
+<button onclick = "leancloud.save()">更新</button>
+<script>
+var { Query, User } = AV; 
+ AV.init("MW9UfmNmX0phVCcw2YCPQmye-MdYXbMMI","XslNotJgRdIcWVdNlTTWtCAv"); 
+// 5ea433652f040b00087ed51f
+leancloud ={
+add(){
+        console.log(["add"])
+        var obj = AV.Object.extend('v_info');
+        var obj = new obj();
+        obj.set('vid', "test");
+        obj.set('info',"test");
+        obj.save().then(function (obj) { 
+          console.log('New visitor created with objectId: ' + obj.id);
+        }, function (error) { 
+          console.error('Failed to create new visitor, with error message: ' + error.message);
+        });
+    },
+	init() {
+	 console.log(["init"])
+	 var query = new AV.Query('v_info');
+      query.equalTo('vid', 'test');
+      query.find().then(function (results) {
+	    var cur = results[0].attributes  
+	    $("#info").val(cur.info)
+	  })
+	},
+	
+	save(){
+	 console.log(["save"])
+	  todo = AV.Object.createWithoutData('v_info', '5ea433652f040b00087ed51f');
+	  todo.set('info', $("#info").val());
+      todo.save();
+	},
+	initlist: function () {
+         //加載信息
+      var query = new AV.Query('v_info');
+      //query.equalTo('state', 1);
+      query.find().then(function (results) {
+      console.log(results)
+      
+       message_list = results
+       
+
+       let promises = [];
+       let myData = [];
+       results.forEach(item => {
+         promises.push(
+          Usernames.get(item.attributes.userid).then(data => { 
+             myData.push(data);
+           })
+         );
+       });
+       Promise.all(promises).then(() => {
+        for(var i in results){ 
+       
+          $("#webSite_message").append(html)
+        } 
+
+       }); 
+         
+      }, function (error) {
+      });
+    },
+	}
+	leancloud.init()
+</script>
