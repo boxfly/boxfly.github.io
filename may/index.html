@@ -300,7 +300,7 @@ function ItemList(props) {
                     {
                         list.map((item,index)=>{
                             return <div key={index} className="list-item"> 
-                                { item.date } 获得 { item.score }分, 记录如下:  <br/>
+                               { item.attributes.date }  获得<span>{ item.attributes.score }</span>分, 记录如下:  <br/>
                             <textarea  value ={item.attributes.desc}  onChange={ (e)=>{onChange(e,index)} }>  </textarea>
 						      <button className="ui-btn ui-btn-primary"  onClick={ ()=>{ updateItem(index) }}  >更新</button>
 					          <button className="ui-btn ui-btn-danger"  onClick={ ()=>{ deleteItem(item.id,index) }}>删除</button>
