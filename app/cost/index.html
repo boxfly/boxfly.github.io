@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>记账小本</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <link rel="stylesheet" href="http://demo.sc.chinaz.com/Files/DownLoad/webjs1/201709/jiaoben5372/css/ydui.css?rev=@@hash"/>
+     
+    <script src="../../js/leancloud.js"></script>
+    <script src="https://cdn1.lncld.net/static/js/3.2.1/av-min.js"></script>   
+
+    <style>
+        html{font-size: 30px;}
+        ::-webkit-scrollbar {width:9px;height:9px;}
+        ::-webkit-scrollbar-track {width: 6px;background-color:#ccc;-webkit-border-radius: 2em;-moz-border-radius: 2em;border-radius:2em;}
+        ::-webkit-scrollbar-thumb {background-color:#606d71;background-clip:padding-box;min-height:28px;-webkit-border-radius: 2em;-moz-border-radius: 2em;border-radius:2em;}
+        ::-webkit-scrollbar-thumb:hover {background-color:#1f9e8e;}
+
+        .flex{height: 50px;display: flex;align-items: center;justify-content: center;}
+        .grids-item{padding: 0;}
+        .grids-txt:hover{background-color: #ccc;}
+        .list .cell-item:first-child{background-color: antiquewhite!important;}
+        .icon-error-outline{margin: 5px;}
+        .m-cell:nth-child(3) .cell-item:first-child{background:#8B78E2!important;}
+        .g-scrollview{overflow: hidden;} 
+        .myGard{width: 100%;}
+        .myGard>li{height: 50%;}
+        </style>
+    
+<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="./app.js"></script>
+</head>
+<body>
+<section class="g-flexview">
+
+    <header class="m-navbar">
+        <a href="../index.html" class="navbar-item"><i class="no-back-ico"></i></a>
+        <div class="navbar-center"><span class="navbar-title">记账小本</span></div>
+    </header>
+
+    <section class="g-scrollview">
+         
+        <div class="m-cell list" id="list" style="height: 30vh;overflow:auto;">
+     
+             
+        </div>
+        <div class="m-cell ">
+            <div class="cell-item"> 
+                <ul class="myGard">
+                    
+
+                </ul>
+            </div>
+        </div>
+        
+        <div class="m-cell ">
+            <div class="cell-item">
+                <div class="cell-left">用途：</div>
+                <div class="cell-right"><input type="text"  id="title" class="cell-input" placeholder="钱钱用在哪里了呢" autocomplete="off" />
+                    <i class="icon-order" onclick="app.title('生活采购')"></i>
+                    <i class="icon-shopcart-outline"  onclick="app.title('服装购物')"></i>
+                    <i class="icon-home" onclick="app.title('家庭')"></i>
+                    <i class="icon-phone3" onclick="app.title('话费')"></i>
+                    <i class="icon-location" onclick="app.title('公交')"></i>
+                    <i class="icon-shield" onclick="app.title('医疗防卫')"></i>
+                    <i class="icon-feedback" onclick="app.title('未来计划')"></i>
+                    <i class="icon-like" onclick="app.title('献爱心')"></i>
+                    
+                </div>
+            </div>
+            <div class="cell-item">
+                <div class="cell-left">金额：</div>
+                <div class="cell-right"><input type="text"  id="cost" readonly class="cell-input" placeholder="花费" autocomplete="off" /></div>
+            </div>
+            <div class="cell-item">
+                <div class="cell-left">默认购物</div>
+                <div class="cell-right">倍数*1</div>
+            </div>
+            <ul class="m-grids-3">
+                <li class="grids-item" onclick="app.append(1)"><div class="grids-txt flex">1</div></li>
+                <li class="grids-item" onclick="app.append(2)"><div class="grids-txt flex">2</div></li>
+                <li class="grids-item" onclick="app.append(3)"><div class="grids-txt flex">3</div></li>
+            </ul>
+            <ul class="m-grids-3">
+                <li class="grids-item" onclick="app.append(4)"><div class="grids-txt flex">4</div></li>
+                <li class="grids-item" onclick="app.append(5)"><div class="grids-txt flex">5</div></li>
+                <li class="grids-item" onclick="app.append(6)"><div class="grids-txt flex">6</div></li>
+            </ul>
+            <ul class="m-grids-3">
+                <li class="grids-item" onclick="app.append(7)"><div class="grids-txt flex">7</div></li>
+                <li class="grids-item" onclick="app.append(8)"><div class="grids-txt flex">8</div></li>
+                <li class="grids-item" onclick="app.append(9)"><div class="grids-txt flex">9</div></li>
+            </ul>
+            <ul class="m-grids-3">
+                <li class="grids-item" onclick="app.append('C')"><div class="grids-txt flex">C</div></li>
+                <li class="grids-item" onclick="app.append(0)"><div class="grids-txt flex">0</div></li>
+                <li class="grids-item" onclick="app.add()"> <div class="grids-txt  flex"><a href="javascript:;" class="btn btn-warning">OK</a></div></li>
+            </ul>  
+        </div>
+  
+
+    </section>
+
+</section>
+</body>
+</html>
+      
+<script>
+    Array(50).fill(1).map((e,i)=>{
+        $(".list1").append(`
+        <a class="cell-item" href="javascript:;">
+            <div class="cell-left"><i class="cell-icon demo-icons-order"></i>我的订单</div>
+            <div class="cell-right ">查看全部订单</div>
+        </a>`)
+    })
+    var { Query, User } = AV;  AV.init("MW9UfmNmX0phVCcw2YCPQmye-MdYXbMMI","XslNotJgRdIcWVdNlTTWtCAv");
+    var appName ="V_APP_COST_1"
+    // leancloud.createObj(appName,{ user:"system", costList:[],desc:"记账小本", } ).then((res)=>{ console.log(res)      })
+    var appNameID;
+    // 对接用户系统 拿到user名称
+    leancloud.search(appName,0,200,"user","system").then((res)=>{
+         console.log(res[0])      
+         appNameID= res[0].id
+         app.data.list = res[0].attributes.costList
+         app.init();
+    })
+    // leancloud.searchs(appName,0,200,["user","key"],["system","4"]).then((res)=>{ console.log(res)      })
+    // leancloud.updateObj(appName,appNameID,{costList:[]}).then((res)=>{ console.log(res)       })
+    
+    
+ </script>
+ 
